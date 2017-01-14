@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let socket = new WebSocket('ws://127.0.0.1:7001');
+    socket.onopen = function () {
+      console.log('connection established');
+      socket.send('connection established');
+    };
+    socket.onmessage = function (event) {
+      console.log(event.data);
+    };
+    socket.onerror = function () {
+      console.log(arguments);
+    };
+    socket.onclose = function () {
+      console.log(arguments);
+    };
+  </script>
+</body>
+</html>
