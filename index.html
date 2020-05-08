@@ -2,24 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>WebSocket</title>
+  <style>
+    textarea {
+      display: block;
+      width: 100%;
+      height: 150px;
+      box-sizing: border-box;
+    }
+    button {
+      float: right;
+      margin-top: 8px;
+    }
+  </style>
 </head>
 <body>
+  <textarea id="editor"></textarea>
+  <button id="btn">send</button>
   <script>
-    let socket = new WebSocket('ws://127.0.0.1:7001');
-    socket.onopen = function () {
-      console.log('connection established');
-      socket.send('connection established');
-    };
-    socket.onmessage = function (event) {
-      console.log(event.data);
-    };
-    socket.onerror = function () {
-      console.log(arguments);
-    };
-    socket.onclose = function () {
-      console.log(arguments);
-    };
+    // important: change port here
+    let socket = new WebSocket('ws://127.0.0.1:5000')
+    socket.onopen = () => {
+      console.log('connection established')
+      socket.send('hello from client')
+    }
+    socket.onmessage = (event) => {
+      console.log(event.data)
+    }
+    socket.onerror = function() {
+      console.log(arguments)
+    }
+    socket.onclose = function() {
+      console.log(arguments)
+    }
+    let editor = document.getElementById('editor')
+    let btn = document.getElementById('btn')
+    btn.onclick = () => {
+      socket.send(editor.value)
+    }
   </script>
 </body>
 </html>

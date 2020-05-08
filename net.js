@@ -1,29 +1,32 @@
+/**
+ * http server and websocket server using different port
+ */
 
-const net = require('net');
-const http = require('http');
-const fs = require('fs');
-const Websocket = require('./websocket');
+const fs = require('fs')
+const net = require('net')
+const http = require('http')
+const Websocket = require('./websocket')
 
 http.createServer((req, res) => {
-  fs.readFile('./index.html', function (err, file) {
+  fs.readFile('./index.html', (err, file) => {
     if (err) {
-      throw err;
+      throw err
     }
-    res.writeHeader(200, {"Content-Type": "text/html"});
-    res.write(file);
-    res.end();
-  });
-}).listen(7000);
+    res.writeHeader(200, {"Content-Type": "text/html"})
+    res.write(file)
+    res.end()
+  })
+}).listen(7000)
 
-net.createServer(function (socket) {
-  socket.once('data', function (data) {
-    let json = {};
-    data.toString().split('\r\n').forEach(function (item) {
-      let [key, value] = item.split(':');
+net.createServer(socket => {
+  socket.once('data', data => {
+    let json = {}
+    data.toString().split('\r\n').forEach(item => {
+      let [key, value] = item.split(':')
       if(item.indexOf(':') !== -1){
-        json[key] = value.trim();
+        json[key] = value.trim()
       }
-    });
-    new Websocket().connect(json, socket);
-  });
-}).listen(7001);
+    })
+    new Websocket().connect(json, socket)
+  })
+}).listen(7001)
